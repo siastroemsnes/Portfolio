@@ -1,0 +1,174 @@
+---
+title: "output analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(rmarkdown)
+library(readxl)
+library(DescTools)
+```
+
+```{r}
+scm <- read_excel("outputanalysis.xlsx", 
+                                  sheet = "StandardClinicModel")
+
+stm <- read_excel("outputanalysis.xlsx", 
+                                     sheet = "ImprovedStartTimeModel")
+
+pcm <- read_excel("outputanalysis.xlsx", 
+                                        sheet = "ImprovedPolicyChangeModel")
+
+rtm <- read_excel("outputanalysis.xlsx", 
+                                         sheet = "ImprovedResidentsTimeModel")
+
+nr1m <- read_excel("outputanalysis.xlsx", 
+                                              sheet = "ImprovedNumberResidentsOnly1Mod")
+
+nr2m <- read_excel("outputanalysis.xlsx", 
+                                              sheet = "ImprovedNumberResidentsOnly2Mod")
+
+
+sm1 <- read_excel("outputanalysis.xlsx", 
+                   sheet = "ImprovedScheduleModel1")
+
+sm2 <- read_excel("outputanalysis.xlsx", 
+                  sheet = "ImprovedScheduleModel2")
+
+sm3 <- read_excel("outputanalysis.xlsx", 
+                  sheet = "ImprovedScheduleModel3")
+```
+
+Total Cycle Time
+```{r}
+MeanCI(scm$`Total Cycle Time`)
+MeanCI(stm$`Total Cycle Time`)
+
+t.test(scm$`Total Cycle Time`, stm$`Total Cycle Time`)
+```
+
+```{r}
+#Standard Clinic Model and Improved Policy Change
+MeanCI(scm$`Total Cycle Time`)
+MeanCI(pcm$`Total Cycle Time`)
+
+t.test(scm$`Total Cycle Time`, pcm$`Total Cycle Time`)
+```
+
+```{r}
+#Standard Clinic Model and Improved Resident Time Model
+MeanCI(scm$`Total Cycle Time`)
+MeanCI(rtm$`Total Cycle Time`)
+
+t.test(scm$`Total Cycle Time`, rtm$`Total Cycle Time`)
+```
+
+```{r}
+#Standard Clinic Model and 1 Resident Model
+MeanCI(scm$`Total Cycle Time`)
+MeanCI(nr1m$`Total Cycle Time`)
+
+t.test(scm$`Total Cycle Time`, nr1m$`Total Cycle Time`)
+```
+
+```{r}
+#Standard Clinic Model and 2 Residents Model
+MeanCI(scm$`Total Cycle Time`)
+MeanCI(nr2m$`Total Cycle Time`)
+
+t.test(scm$`Total Cycle Time`, nr2m$`Total Cycle Time`)
+```
+
+```{r}
+#Standard Clinic Model and Schedule 1
+MeanCI(scm$`Total Cycle Time`)
+MeanCI(sm1$`Total Cycle Time`)
+
+t.test(scm$`Total Cycle Time`, sm1$`Total Cycle Time`)
+```
+
+```{r}
+#Standard Clinic Model and Schedule 2
+MeanCI(scm$`Total Cycle Time`)
+MeanCI(sm2$`Total Cycle Time`)
+
+t.test(scm$`Total Cycle Time`, sm2$`Total Cycle Time`)
+```
+
+```{r}
+#Standard Clinic Model and Schedule 3
+MeanCI(scm$`Total Cycle Time`)
+MeanCI(sm3$`Total Cycle Time`)
+
+t.test(scm$`Total Cycle Time`, sm3$`Total Cycle Time`)
+```
+
+WIP
+```{r}
+#Standard Clinic Model and Improved Start Time
+MeanCI(scm$`Total WIP`)
+MeanCI(stm$`Total WIP`)
+
+t.test(scm$`Total WIP`, stm$`Total WIP`)
+```
+
+```{r}
+#Standard Clinic Model and Improved Policy Change
+MeanCI(scm$`Total WIP`)
+MeanCI(pcm$`Total WIP`)
+
+t.test(scm$`Total WIP`, pcm$`Total WIP`)
+```
+
+```{r}
+#Standard Clinic Model and Improved Resident Time Model
+MeanCI(scm$`Total WIP`)
+MeanCI(rtm$`Total WIP`)
+
+t.test(scm$`Total WIP`, rtm$`Total WIP`)
+```
+
+```{r}
+#Standard Clinic Model and 1 Resident Model
+MeanCI(scm$`Total WIP`)
+MeanCI(nr1m$`Total WIP`)
+
+t.test(scm$`Total WIP`, nr1m$`Total WIP`)
+```
+
+```{r}
+#Standard Clinic Model and 2 Residents Model
+MeanCI(scm$`Total WIP`)
+MeanCI(nr2m$`Total WIP`)
+
+t.test(scm$`Total WIP`, nr2m$`Total WIP`)
+```
+
+```{r}
+#Standard Clinic Model and Schedule 1
+MeanCI(scm$`Total WIP`)
+MeanCI(sm1$`Total WIP`)
+
+t.test(scm$`Total WIP`, sm1$`Total WIP`)
+```
+
+```{r}
+#Standard Clinic Model and Schedule 2
+MeanCI(scm$`Total WIP`)
+MeanCI(sm2$`Total WIP`)
+
+t.test(scm$`Total WIP`, sm2$`Total WIP`)
+```
+
+```{r}
+#Standard Clinic Model and Schedule 3
+MeanCI(scm$`Total WIP`)
+MeanCI(sm3$`Total WIP`)
+
+t.test(scm$`Total WIP`, sm3$`Total WIP`)
+```
+
+```{r}
+
+```
