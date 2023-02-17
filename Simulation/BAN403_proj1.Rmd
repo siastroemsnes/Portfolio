@@ -1,0 +1,375 @@
+---
+title: "BAN403_proj1"
+output: html_document
+---
+
+#Introduction to plots and work in R 
+
+In this markdown file, we have made graphs connected to the assignment in JaamSim. We exported a datafile from JaamSim in which we manipulated in Excel to make a better overview over the necessary data for further analysis. Thereafter, we imported the datafile in R where we used the package Plotly to make nice graphs. In problem 2 a-c) we have mainly focused on the frequency of customers in queue, cycle time (the time the customer spends in the store from they arrive until they leave), the average queue length, the average queue time, and the maximum queue length. 
+
+#Loading necessary packages and files
+
+In R, we started to load necessary packages.
+
+```{r}
+library(readxl)
+library(dplyr)
+library(plotly)
+library(rmarkdown)
+```
+
+#Frequency bar chart 
+
+Loading in necessary data from Excel file to make the frequency bar charts. 
+
+```{r}
+df_bar_2a <- read_excel("~/Desktop/BAN403/Project 1/Excel/Problem 2/df_2a.xlsx", 
+                        sheet = "Sheet2", col_types = c("numeric", "numeric", "numeric"))
+```
+
+```{r}
+df_bar_2b <- read_excel("~/Desktop/BAN403/Project 1/Excel/Problem 2/df_2b.xlsx", 
+                        sheet = "Sheet2", col_types = c("numeric", "numeric", "numeric"))
+```
+
+```{r}
+df_bar_2c <- read_excel("~/Desktop/BAN403/Project 1/Excel/Problem 2/df_2c.xlsx", 
+                        sheet = "Sheet2", col_types = c("numeric", "numeric", "numeric"))
+```
+
+```{r}
+df_bar_2d <- read_excel("~/Desktop/BAN403/Project 1/Excel/Problem 2/df_2d.xlsx", 
+                        sheet = "Sheet2", col_types = c("numeric", "numeric", "numeric"))
+```
+
+```{r}
+df_bar_2e <- read_excel("~/Desktop/BAN403/Project 1/Excel/Problem 2/df_2e.xlsx", 
+                        sheet = "Sheet2", col_types = c("numeric", "numeric", "numeric"))
+```
+
+
+Afterwards, we make the models in which we use the package Plotly from the R environment. 
+
+```{r}
+bar_2a<- df_bar_2a %>%
+  plot_ly(x=~QueueLength, y=~AvgTime, type = "bar")%>% 
+  add_trace(x = ~QueueLength, y = ~Perc*100, type = 'scatter',  mode = 'lines', line = list(color="black"))%>%
+  layout(xaxis = list(categoryorder = "total descending"))
+
+
+bar_2a
+```
+
+
+```{r}
+bar_2b<- df_bar_2b %>%
+  plot_ly(x=~QueueLength, y=~AvgTime, type = "bar")%>% 
+  add_trace(x = ~QueueLength, y = ~Perc*100, type = 'scatter',  mode = 'lines', line = list(color="black"))%>%
+  layout(xaxis = list(categoryorder = "total descending"))
+
+
+bar_2b
+```
+
+```{r}
+bar_2c<- df_bar_2c %>%
+  plot_ly(x=~QueueLength, y=~AvgTime, type = "bar")%>% 
+  add_trace(x = ~QueueLength, y = ~Perc*100, type = 'scatter',  mode = 'lines', line = list(color="black"))%>%
+  layout(xaxis = list(categoryorder = "total descending"))
+
+
+bar_2c
+```
+
+```{r}
+bar_2d<- df_bar_2d %>%
+  plot_ly(x=~QueueLength, y=~AvgTime, type = "bar")%>% 
+  add_trace(x = ~QueueLength, y = ~Perc*100, type = 'scatter',  mode = 'lines', line = list(color="black"))%>%
+  layout(xaxis = list(categoryorder = "total descending"))
+
+
+bar_2d
+```
+
+```{r}
+bar_2e<- df_bar_2e %>%
+  plot_ly(x=~QueueLength, y=~AvgTime, type = "bar")%>% 
+  add_trace(x = ~QueueLength, y = ~Perc*100, type = 'scatter',  mode = 'lines', line = list(color="black"))%>%
+  layout(xaxis = list(categoryorder = "total descending"))
+
+
+bar_2e
+```
+
+From the bar charts, we see that there are quite large differences based on what queue system the grocery store chooses. The bars represent how many minutes the queue length was the respectively lengths (x-axis). We see that the solution in 2a where it is one queue and one server (checkout), the majority of the time, there was no queue. Almost 60% of the time, the shoppers could walk straight to cashier once they were done. 
+
+The second chart (2b), in which the store had one queue and one server but a different service time (normal distribution with mean 30s and std 10s), we see that this gives approximately the same queue result as in 2a.
+
+The third chart have some new conditions in which there are two queues and two servers. Now the distribution of queue is somewhat changed. The percentage of no queue has now dropped to about 30%, and we have a decent amount of time where it is around 6 people in the queue (approx. 15%).
+
+The fourth chart, 2d, takes into consideration that the shoppers can be light or heavy. The observations from the chart proves that two lines as well as different customers spending different time in the store, leads to queues with around 7-10 people a lot of the times. We also see that the variability is greater compared to the models in 2a), 2b), and 2c). 
+
+The last chart we made is from the fifth model where the grocery store has an express checkout queue, designated only to the light shoppers, while the second checkout can serve both the light- and the heavy shoppers. This leads to even greater variation in queue length, but will in many cases (41%) not have any queue. 
+
+#Loading files for simulation results
+
+```{r}
+df_2a <- read_excel("~/Desktop/BAN403/Project 1/Excel/Problem 2/df_2a.xlsx", 
+                    sheet = "Sheet1")
+```
+
+```{r}
+df_2b <- read_excel("~/Desktop/BAN403/Project 1/Excel/Problem 2/df_2b.xlsx", 
+                    sheet = "Sheet1")
+```
+
+```{r}
+df_2c <- read_excel("~/Desktop/BAN403/Project 1/Excel/Problem 2/df_2c.xlsx", 
+                    sheet = "Sheet1")
+```
+
+```{r}
+df_2d <- read_excel("~/Desktop/BAN403/Project 1/Excel/Problem 2/df_2d.xlsx", 
+                    sheet = "Sheet1")
+```
+
+```{r}
+df_2e <- read_excel("~/Desktop/BAN403/Project 1/Excel/Problem 2/df_2e.xlsx", 
+                    sheet = "Sheet1")
+```
+
+#Average Cycle Time 
+
+```{r}
+CycleTime_2a <- df_2a %>%
+  sample_n(300)
+
+CT_scatter_2a <- CycleTime_2a%>%
+  plot_ly(x=~Replication, y=~CycleTime, type='scatter', mode='markers', color=~CycleTime, colors = c('red', '#FFC300', '#006400'))
+
+CT_scatter_2a
+```
+
+```{r}
+CycleTime_2b <- df_2b %>%
+  sample_n(300)
+
+CT_scatter_2b <- CycleTime_2b%>%
+  plot_ly(x=~Replication, y=~CycleTime, type='scatter', mode='markers', color=~CycleTime, colors = c('red', '#FFC300', '#006400'))
+
+CT_scatter_2b
+```
+
+```{r}
+CycleTime_2c <- df_2c %>%
+  sample_n(300)
+
+CT_scatter_2c <- CycleTime_2c%>%
+  plot_ly(x=~Replication, y=~CycleTime, type='scatter', mode='markers', color=~CycleTime, colors = c('red', '#FFC300', '#006400'))
+
+CT_scatter_2c
+```
+
+```{r}
+CycleTime_2d <- df_2d %>%
+  sample_n(300)
+
+CT_scatter_2d <- CycleTime_2d%>%
+  plot_ly(x=~Replication, y=~CycleTime, type='scatter', mode='markers', color=~CycleTime, colors = c('red', '#FFC300', '#006400'))
+
+CT_scatter_2d
+```
+
+```{r}
+CycleTime_2e <- df_2e %>%
+  sample_n(300)
+
+CT_scatter_2e <- CycleTime_2e%>%
+  plot_ly(x=~Replication, y=~CycleTime, type='scatter', mode='markers', color=~CycleTime, colors = c('red', '#FFC300', '#006400'))
+
+CT_scatter_2e
+```
+
+TOLKNING
+
+#Average Cycle Time Light/Heavy
+
+```{r}
+CycleTime_2d_light <- df_2d %>%
+  sample_n(300)
+
+CT_scatter_2d_light <- CycleTime_2d_light%>%
+  plot_ly(x=~Replication, y=~CycletimeLight, type='scatter', mode='markers', color=~CycletimeLight, colors = c('red', '#FFC300', '#006400'))
+
+CT_scatter_2d_light
+```
+
+```{r}
+CycleTime_2e_light <- df_2e %>%
+  sample_n(300)
+
+CT_scatter_2e_light <- CycleTime_2e_light%>%
+  plot_ly(x=~Replication, y=~CycleTimeLight, type='scatter', mode='markers', color=~CycleTimeLight, colors = c('red', '#FFC300', '#006400'))
+
+CT_scatter_2e_light
+```
+
+```{r}
+CycleTime_2d_heavy <- df_2d %>%
+  sample_n(300)
+
+CT_scatter_2d_heavy <- CycleTime_2d_heavy%>%
+  plot_ly(x=~Replication, y=~CycleTimeHeavy, type='scatter', mode='markers', color=~CycleTimeHeavy, colors = c('red', '#FFC300', '#006400'))
+
+CT_scatter_2d_heavy
+```
+
+```{r}
+CycleTime_2e_heavy <- df_2e %>%
+  sample_n(300)
+
+CT_scatter_2e_heavy <- CycleTime_2e_heavy%>%
+  plot_ly(x=~Replication, y=~CycleTimeHeavy, type='scatter', mode='markers', color=~CycleTimeHeavy, colors = c('red', '#FFC300', '#006400'))
+
+CT_scatter_2e_heavy
+```
+
+#Average Queue Length
+
+```{r}
+AQL_2a <- df_2a %>%
+  sample_n(300)
+
+AQL_scatter_2a <- AQL_2a %>%
+  plot_ly(x=~Replication, y=~AverageQueueLength, type='scatter', mode='markers', color=~AverageQueueLength, colors = c('red', '#FFC300', '#006400'))
+
+AQL_scatter_2a
+```
+
+```{r}
+AQL_2b <- df_2b %>%
+  sample_n(300)
+
+AQL_scatter_2b <- AQL_2b %>%
+  plot_ly(x=~Replication, y=~AverageQueueLength, type='scatter', mode='markers', color=~AverageQueueLength, colors = c('red', '#FFC300', '#006400'))
+
+AQL_scatter_2b
+```
+
+```{r}
+AQL_2c <- df_2c %>%
+  sample_n(300)
+
+AQL_scatter_2c <- AQL_2c %>%
+  plot_ly(x=~Replication, y=~AverageQueueLength, type='scatter', mode='markers', color=~AverageQueueLength, colors = c('red', '#FFC300', '#006400'))
+
+AQL_scatter_2c
+```
+
+```{r}
+AQL_2d <- df_2d %>%
+  sample_n(300)
+
+AQL_scatter_2d <- AQL_2d %>%
+  plot_ly(x=~Replication, y=~AverageQueueLength, type='scatter', mode='markers', color=~AverageQueueLength, colors = c('red', '#FFC300', '#006400'))
+
+AQL_scatter_2d
+```
+
+```{r}
+AQL_2e <- df_2e %>%
+  sample_n(300)
+
+AQL_scatter_2e <- AQL_2e %>%
+  plot_ly(x=~Replication, y=~AverageQueueLength, type='scatter', mode='markers', color=~AverageQueueLength, colors = c('red', '#FFC300', '#006400'))
+
+AQL_scatter_2e
+```
+TOLKNING
+
+#Average Queue Time
+
+```{r}
+AQT_2a <- df_2a %>%
+  sample_n(300)
+
+AQT_scatter_2a <- AQT_2a %>%
+  plot_ly(x=~Replication, y=~AverageQueueTime, type='scatter', mode='markers', color=~AverageQueueTime, colors = c('red', '#FFC300', '#006400'))
+
+AQT_scatter_2a
+```
+
+```{r}
+AQT_2b <- df_2b %>%
+  sample_n(300)
+
+AQT_scatter_2b <- AQT_2b %>%
+  plot_ly(x=~Replication, y=~AverageQueueTime, type='scatter', mode='markers', color=~AverageQueueTime, colors = c('red', '#FFC300', '#006400'))
+
+AQT_scatter_2b
+```
+
+```{r}
+AQT_2c <- df_2c %>%
+  sample_n(300)
+
+AQT_scatter_2c <- AQT_2c %>%
+  plot_ly(x=~Replication, y=~AverageQueueTime, type='scatter', mode='markers', color=~AverageQueueTime, colors = c('red', '#FFC300', '#006400'))
+
+AQT_scatter_2c
+```
+
+```{r}
+AQL_2d <- df_2d %>%
+  sample_n(300)
+
+AQL_scatter_2d <- AQL_2d %>%
+  plot_ly(x=~Replication, y=~AverageQueueLength, type='scatter', mode='markers', color=~AverageQueueLength, colors = c('red', '#FFC300', '#006400'))
+
+AQL_scatter_2d
+```
+
+```{r}
+AQL_2e <- df_2e %>%
+  sample_n(300)
+
+AQL_scatter_2e <- AQL_2e %>%
+  plot_ly(x=~Replication, y=~AverageQueueLength, type='scatter', mode='markers', color=~AverageQueueLength, colors = c('red', '#FFC300', '#006400'))
+
+AQL_scatter_2e
+```
+
+TOLKNING
+
+#Maximum Waiting Time
+
+```{r}
+MWT_1a <- df_2a %>%
+  sample_n(300)
+
+MWT_scatter_2a <- AQT_2a %>%
+  plot_ly(x=~Replication, y=~MaximumWaitingTime, type='scatter', mode='markers', color=~MaximumWaitingTime, colors = c('red', '#FFC300', '#006400'))
+
+MWT_scatter_2a
+```
+
+```{r}
+MWT_2b <- df_2b %>%
+  sample_n(300)
+
+MWT_scatter_2b <- AQT_2b %>%
+  plot_ly(x=~Replication, y=~MaximumWaitingTime, type='scatter', mode='markers', color=~MaximumWaitingTime, colors = c('red', '#FFC300', '#006400'))
+
+MWT_scatter_2b
+```
+
+```{r}
+MWT_1c <- df_2c %>%
+  sample_n(300)
+
+MWT_scatter_2c <- AQT_2c %>%
+  plot_ly(x=~Replication, y=~MaximumWaitingTime, type='scatter', mode='markers', color=~MaximumWaitingTime, colors = c('red', '#FFC300', '#006400'))
+
+MWT_scatter_2c
+```
+
